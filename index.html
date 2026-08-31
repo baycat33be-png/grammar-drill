@@ -42,7 +42,6 @@
     flex-direction:column;
   }
 
-  /* ---------- HEADER ---------- */
   header{
     background:var(--navy);
     color:var(--white);
@@ -79,7 +78,6 @@
 
   main{flex:1;padding:28px 32px 40px;}
 
-  /* ---------- SETUP SCREEN ---------- */
   .setup-intro{
     color:var(--slate);
     font-size:14.5px;
@@ -191,7 +189,6 @@
     font-family:inherit;
   }
 
-  /* ---------- DRILL SCREEN ---------- */
   .drill-top{
     display:flex;
     justify-content:space-between;
@@ -264,6 +261,23 @@
     font-family:'Shippori Mincho',serif;
     font-size:24px;
   }
+  .prompt-example{
+    font-family:'Cormorant Garamond',serif;
+    font-size:26px;
+    font-weight:600;
+    color:var(--navy);
+    line-height:1.55;
+  }
+  .prompt-example .hl{
+    color:var(--gold);
+    border-bottom:2px solid var(--gold-light);
+  }
+  .prompt-sub{
+    margin-top:14px;
+    font-size:12.5px;
+    color:#9AA0AC;
+    font-family:'Inter',sans-serif;
+  }
   .answer-block{width:100%;}
   .answer-label{
     font-size:11px;
@@ -281,10 +295,53 @@
   }
   .answer-en{
     font-family:'Cormorant Garamond',serif;
-    font-size:26px;
+    font-size:30px;
     color:var(--navy);
-    font-weight:600;
-    margin-bottom:18px;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .answer-full{
+    font-size:12.5px;
+    color:var(--slate);
+    font-family:'Inter',sans-serif;
+    margin-bottom:16px;
+  }
+  .answer-example{
+    font-family:'Cormorant Garamond',serif;
+    font-size:18px;
+    color:var(--navy-soft);
+    font-style:italic;
+    margin-top:4px;
+  }
+  .sibling-block{
+    margin-top:22px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    text-align:left;
+    max-width:440px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .sibling-label{
+    font-size:11px;
+    letter-spacing:.06em;
+    color:var(--gold);
+    font-weight:700;
+    margin-bottom:8px;
+    font-family:'Inter',sans-serif;
+  }
+  .sibling-row{
+    font-size:13.5px;
+    color:var(--navy-soft);
+    line-height:1.7;
+    padding:3px 0 3px 16px;
+    position:relative;
+  }
+  .sibling-row::before{
+    content:"・";
+    position:absolute;
+    left:0;
+    color:var(--gold-light);
   }
   .card-actions{
     padding:18px 24px 24px;
@@ -341,6 +398,7 @@
     header{padding:22px 18px 20px;}
     main{padding:20px 18px 30px;}
     .prompt-text{font-size:24px;}
+    .prompt-example{font-size:21px;}
     .stage-badge{position:static;display:inline-block;margin-top:10px;}
   }
 </style>
@@ -351,7 +409,7 @@
     <div class="stage-badge" id="stageBadge">PHASE 2</div>
     <div class="eyebrow">GRAMMAR RECALL DRILL</div>
     <h1>文法瞬間リコール ドリル</h1>
-    <div class="sub">377パターン ・ カテゴリー別に絞り込み ・ 日→英 / 英→日</div>
+    <div class="sub">377パターン ・ カテゴリー別に絞り込み ・ 日本語 → 英語(産出特化)</div>
   </header>
 
   <main id="main"></main>
@@ -359,13 +417,16 @@
 </div>
 
 <script>
-const CARDS = [["文型","S + V","「S(は/が)ある(いる)」/ 目的語つきの時は「Sは(が)Vする」"],["文型","S + V + C","「S(は/が)Cである」/「S(は/が)CにVする」  ※S=C"],["文型","S + V + O","「Sは Oを V(する)」  ※S≠O、O→V"],["文型","S + V + O1 + O2","「S(は/が)O1に(と)O2をV(する)」  ※O1≠O2、O2→V"],["文型","S + V + O + C","「S(は/が)OをCであるとV(する)」  ※O=C"],["助動詞","must ①","(肯定文)~しなければならない/(否定文)~してはいけない ※主観的"],["助動詞","must ②","(決めつけ)~に違いない"],["助動詞","have to ①","(客観的に)~しなければならない(状況)"],["助動詞","have to ②","(否定)~しなくてもいい"],["助動詞","can ①","能力や技能がある"],["助動詞","can ②","~できる"],["助動詞","can ③","ありえる/可能性がある ※一般常識の範囲内で"],["助動詞","can ④","~してもいい ※状況的に"],["助動詞","can ⑤(疑問)","~してくれない?"],["助動詞","could ①","能力や技能があった ※半永久的な能力"],["助動詞","could ②","~できた"],["助動詞","could ③","もしかするとありえる/可能性がある ※ある条件下で起こりうること"],["助動詞","could ④","~してもいいですよ ※状況的に"],["助動詞","could ⑤(疑問)","~してくださいますか?"],["助動詞","be able to","能力や技能がある ※助動詞ではない"],["助動詞","was/were able to + 動詞原形","過去のその瞬間にはできた"],["助動詞","cannot be too careful","どんなに注意してもしすぎることはない"],["助動詞","cannot help but V (=cannot help ~ing)","~せざるをえない(することを避けられない)"],["助動詞","may ①","~してもよい ※主観、上から目線っぽい"],["助動詞","may ②","~かもしれない"],["助動詞","might ①","~してもよい ※mayより弱い"],["助動詞","might ②","もしかしたら~かもしれない ※可能性低"],["助動詞","may well V","~するのがもっともだ"],["助動詞","may as well V (as~)","(するぐらいなら)~したほうがよい/~するのもよい(他にない時)"],["助動詞","might as well V","~したほうがマシ/~するのも悪くない(他にない時)"],["助動詞","will ①","~だろう"],["助動詞","will ②","~するつもり"],["助動詞","will ③","(こいつ/これは)~するつもりだ"],["助動詞","will ④","~してくれませんか?"],["助動詞","will ⑤","たぶん~だろう"],["助動詞","will ⑥","よく~するものである"],["助動詞","would ①","絶対に~のつもりだった"],["助動詞","would ②","~していただけますでしょうか?"],["助動詞","would ③(弱)","たぶん~だろう"],["助動詞","would ④","よく(好き嫌い)~したものであった ※現在不明、状態動詞は使えない"],["助動詞","used to + 動詞原形","(今は違うけど)以前は~だった"],["助動詞","would like to V","~したい ※丁寧"],["助動詞","want to V","~したい ※ふつう"],["助動詞","would rather V (than 原形)","(~するより)むしろ~したい"],["助動詞","Would you rather A or B?","AとBどちらにしますか?"],["助動詞","Which do you want to V, A or B?","AとBどっちがいいですか?"],["助動詞","Shall I ~?","~しましょうか? ※あなたのために私が"],["助動詞","Shall we ~?","~しましょうか? ※一緒に"],["助動詞","should ①","~すべき"],["助動詞","should ②","~のはず"],["助動詞","It is 感情を表す形容詞 (that) S should V","Sが Vするのは~だ"],["助動詞","S<提案・要望・命令の動詞>(that) S' should V'","S'がV'するべきだとSは(Oに)~する"],["助動詞","It is 形容詞 that…(should)","…することが~だ ※間接的要求"],["助動詞","ought to ①","~すべきだ"],["助動詞","ought to ②","~のはずだ"],["助動詞","had better ①(You~)","~しなさい"],["助動詞","had better ②(You以外~)","~したほうがいい"],["助動詞(完了・慣用)","may have p.p","~したかも/だったかも ※強"],["助動詞(完了・慣用)","might have p.p","~したかも/だったかも ※弱"],["助動詞(完了・慣用)","could have p.p","~したかも/だったかも ※理屈から、客観的に"],["助動詞(完了・慣用)","must have p.p","~したに違いない/だったに違いない"],["助動詞(完了・慣用)","should have p.p / ought to have p.p","~したはず/だったはず ※should=弱、ought to=強"],["助動詞(完了・慣用)","cannot have p.p","~したはずがない/だったはずがない"],["助動詞(完了・慣用)","should not have p.p","~すべきではなかったのに(してしまった)"],["助動詞(完了・慣用)","need not have p.p","~する必要なかったのに(してしまった)"],["助動詞(完了・慣用)","would like O to V","Oに~してほしい"],["助動詞(完了・慣用)","have only to V","~しさえすればいい"],["助動詞(完了・慣用)","dare say ~","おそらく~だろう"],["助動詞(完了・慣用)","How dare ~","よくも~できるものだ"],["助動詞(完了・慣用)","Can I ~?","~してもいいですか? ※状況"],["助動詞(完了・慣用)","May I ~?","~してもいいですか? ※相手に"],["助動詞(完了・慣用)","Will you ~?","~してくれませんか?"],["助動詞(完了・慣用)","Can you ~?","~してくれませんか?"],["助動詞(完了・慣用)","Would you ~?","(もしよろしければ)~してくれませんか?"],["助動詞(完了・慣用)","Could you ~?","(もしよろしければ)~してくれませんか?"],["分詞","現在分詞 ~ing(1語で名詞を前置修飾)","~している(名詞)"],["分詞","現在分詞 ~ing(2語以上で名詞を後置修飾)","(名詞)が~している"],["分詞","過去分詞 ~ed(1語で名詞を前置修飾)","~された(る)(名詞) ※受動態っぽいかんじ"],["分詞","過去分詞 ~ed(2語以上で名詞を後置修飾)","(名詞)が~された(る)"],["分詞","分詞構文 ~ing,","~すると/しながら/なので 等(文脈で判断)"],["分詞","分詞構文 ~ed,","~されると/されて 等(受動の分詞構文)"],["完了形","have/has p.p ①(already)","もう~してしまった"],["完了形","have/has p.p ⑥(just)","ちょうど~したところだ"],["完了形","have/has p.p ②(yet, 否定)","まだ~していない"],["完了形","have/has p.p ③","~したことがある"],["完了形","have/has p.p ④(since/for)","(今まで)ずっと~していた"],["完了形","have/has p.p (never)","~したことが一度もない"],["完了形","had p.p ①(already)","(もう)~してしまっていた"],["完了形","had p.p ②(just)","~したところだった"],["完了形","had p.p ③(yet, 否定)","(まだ)~してしまっていなかった"],["完了形","had p.p ④","~したことがあった(never)"],["完了形","will have p.p ①","~してしまっているだろう"],["完了形","will have p.p ②","~したことがあるだろう"],["完了進行形","have/has been ~ing","(今まで)ずっと~している"],["完了進行形","had been ~ing","(その時まで)ずっと~していた"],["完了進行形","will have been ~ing","ずっと~しているだろう"],["関係詞(制限用法)","~ who/that ~ (主格)","それは、~な人"],["関係詞(制限用法)","~ who/that ~ (目的格、省略可)","それは、~な人"],["関係詞(制限用法)","~ which/that ~ (主格、人以外)","それは、~な人以外のもの"],["関係詞(制限用法)","~ which/that ~ (目的格、省略可)","それは、~な人以外のもの"],["関係詞(制限用法)","~ whose ~,","それは、(whoseが持っている)~の(名詞)"],["関係詞(制限用法)","前置詞 + 関係代名詞","それは、~な(前置詞+関係代名詞)"],["関係詞(制限用法)","what ~ (主格、先行詞なし)","~するもの"],["関係詞(制限用法)","what ~ (目的格、先行詞なし)","~すること"],["関係詞(制限用法)","where,(先行詞あってもなくても)","それは、~する場所"],["関係詞(制限用法)","when,(先行詞あってもなくても)","それは、~する時"],["関係詞(制限用法)","why,(先行詞省略可 = the reason)","それは、~する理由"],["関係詞(制限用法)","how,(先行詞省略、使う時はhow自体を省略 = the way)","それは、~する方法"],["関係詞(非制限用法)",", who ~,","(先行詞=既に特定できる人)。ちなみに、その人は~ ※that不可、省略不可"],["関係詞(非制限用法)",", which ~,","(先行詞=既に特定できるもの、または前の文全体)。ちなみに、それは~ ※that不可、省略不可"],["関係詞(非制限用法)",", whose ~,","(先行詞=既に特定できる人/もの)。ちなみに、その~は…"],["関係詞(非制限用法)",", where ~,","(先行詞=既に特定できる場所、地名など)。ちなみに、そこでは~"],["関係詞(非制限用法)",", when ~,","(先行詞=既に特定できる時、年号など)。ちなみに、その時~"],["関係詞(非制限用法)","制限用法 vs 非制限用法","制限用法=先行詞を限定・特定する(コンマなし) / 非制限用法=すでに特定された先行詞に補足説明を加える(コンマあり)"],["複合・連鎖関係詞","関係代名詞 S think/believe/say/hear/know/find V","それは、S'が~と思う/信じる/言う/聞く/知る/見つける(関係詞)である"],["複合・連鎖関係詞","先行詞 as ~,","~のような(先行詞)"],["複合・連鎖関係詞","no/never 先行詞 but ~","~でない(先行詞)はない"],["複合・連鎖関係詞","whoever ①","誰でも"],["複合・連鎖関係詞","whoever ②(= no matter who S be)","誰だろうと"],["複合・連鎖関係詞","whichever ①","どちらでも"],["複合・連鎖関係詞","whichever ②(= no matter which~)","どっちだろうと"],["複合・連鎖関係詞","whatever ①","何でも"],["複合・連鎖関係詞","whatever ②(= no matter what~)","何だろうと"],["複合・連鎖関係詞","whenever ①","いつでも"],["複合・連鎖関係詞","whenever ②(= no matter when、譲歩)","いつ~しても"],["複合・連鎖関係詞","wherever ①","どこでも"],["複合・連鎖関係詞","wherever ②(= no matter where、譲歩)","どこへ~しても"],["複合・連鎖関係詞","however(= no matter how、譲歩)","どんなに~しても"],["不定詞","to V(名詞的用法、主語)","~することは"],["不定詞","to V(名詞的用法、補語)","~することだ"],["不定詞","to V(名詞的用法、目的語)","~することを"],["不定詞","It ~ to V","~することは…"],["不定詞","to V(形容詞的用法、名詞を修飾)","~する(名詞)"],["不定詞","to V(副詞的用法①目的、動詞を修飾)","~するために"],["不定詞","to V(副詞的用法②感情の原因、形容詞を後ろから修飾)","~して(感情形容詞)だ"],["不定詞","to V(副詞的用法③判断の根拠)","~して(形容詞)だ"],["不定詞","to V(副詞的用法④結果、動詞を修飾)","結果~する"],["不定詞","to V(副詞的用法⑤程度、形容詞を修飾)","~するのに(形容詞)だ"],["不定詞(重要表現)","be to V ①","~すべき"],["不定詞(重要表現)","be to V ②","~する予定である"],["不定詞(重要表現)","be to V ③","~できる"],["不定詞(重要表現)","be to V ④","~するつもり/したい"],["不定詞(重要表現)","be to V ⑤","~する運命である"],["不定詞(重要表現)","in order to V / so as to V","~するために"],["不定詞(重要表現)","too 形/副 to V ①","~するには(形/副)すぎる"],["不定詞(重要表現)","too 形/副 to V ②","あまりに(形/副)すぎて~できない"],["不定詞(重要表現)","形/副 enough (for A) to V","(Aが)~するには十分(形/副)"],["不定詞(重要表現)","not/never to V","~しない(こと)"],["不定詞(重要表現)","tell O to V","Oに~するように言う"],["不定詞(重要表現)","ask O to V","Oに~するように頼む"],["不定詞(重要表現)","want O to V","Oに~してほしい"],["不定詞(重要表現)","to be p.p","~されること(受動)"],["不定詞(重要表現)","to have p.p","(過去に)~だったよう(完了)"],["不定詞(重要表現)","to be ~ing","~しているよう(進行)"],["不定詞(重要表現)","what to V","何を~すべきか"],["不定詞(重要表現)","where to V","どこに/へ/で~すべきか"],["不定詞(重要表現)","when to V","いつ~すべきか"],["不定詞(重要表現)","which(名詞) to V","どちら(の名詞)を~すべきか"],["不定詞(重要表現)","whether to V","~すべきかどうか"],["不定詞(重要表現)","how to V","~の仕方"],["不定詞(重要表現)","who to V","誰を/に~すべきか"],["不定詞(重要表現)","make O V(原形)","Oに(強制的に/無意識のうちに)~させる"],["不定詞(重要表現)","let O V(原形)","Oに(望み通りに/許可して)~させる/させてやる"],["不定詞(重要表現)","have O V(原形)","Oに~させる/してもらう"],["不定詞(重要表現)","get O to V","Oに(頼んだり説得して)~してもらう"],["不定詞(重要表現)","watch O V(原形)","Oが~するのを(ずっと)見る"],["不定詞(重要表現)","see O V(原形)","Oが~するのを(ずっと)見る/見える"],["不定詞(重要表現)","hear O V(原形)","Oが~するのが聞こえる"],["不定詞(重要表現)","feel O V(原形)","Oが~するのを感じる"],["不定詞(重要表現)","happen to V(肯定文)","たまたま~する"],["不定詞(重要表現)","happen to V?(疑問文)","ひょっとして~?"],["不定詞(重要表現)","come/get to V","~するようになる"],["不定詞(重要表現)","learn to V","~できるようになる"],["不定詞(重要表現)","manage to V","どうにか~する"],["不定詞(重要表現)","can afford to V","~する余裕がある"],["不定詞(重要表現)","prove to be","~だと分かる"],["不定詞(重要表現)","turn out to be","~だと分かる"],["不定詞(重要表現)","likely to V","~しそうだ"],["不定詞(重要表現)","unlikely to V","~しそうにない"],["不定詞(重要表現)","sure to V","きっと~する"],["不定詞(重要表現)","ready to V","~する準備ができている/喜んで~する"],["不定詞(重要表現)","willing to V","~する気がある/~するのをいとわない"],["不定詞(重要表現)","reluctant to V","~するのが気乗りしない/気が進まない"],["不定詞(重要表現)","due to V","~することになっている"],["不定詞(重要表現)","eager to V","~したがる"],["不定詞(重要表現)","have something to do with A","Aと関係がある"],["不定詞(重要表現)","have nothing to do with A","Aと関係がない"],["不定詞(重要表現)","To be honest,","正直に言うと"],["不定詞(重要表現)","Needless to say,","言うまでもなく"],["不定詞(重要表現)","To tell the truth,","実を言うと"],["不定詞(重要表現)","To make a long story short,","手短に言うと"],["不定詞(重要表現)","to begin with ①","まず、第一に"],["不定詞(重要表現)","to begin with ②","そもそも"],["不定詞(重要表現)","hope to V","~することを望む"],["不定詞(重要表現)","wish to V","~することを願う"],["不定詞(重要表現)","mean to V","~しようとする"],["不定詞(重要表現)","expect to V","~することを期待/予期する"],["不定詞(重要表現)","plan to V","~することを計画する"],["不定詞(重要表現)","decide to V","~することを決める"],["不定詞(重要表現)","agree to V","~することを同意する"],["不定詞(重要表現)","offer to V","~することを申し出る"],["不定詞(重要表現)","promise to V","~することを約束する"],["不定詞(重要表現)","refuse to V","~することを拒否する"],["不定詞(重要表現)","deserve to V","~する権利がある"],["不定詞(重要表現)","arrange to V","~するよう手配する"],["不定詞(重要表現)","fail to V","~できない"],["不定詞(重要表現)","afford to V","~する余裕がある"],["動名詞","Ving(主語)","~すること(主語)"],["動名詞","Ving(補語)","~すること(補語)"],["動名詞","Ving(目的語)","~すること(目的語)"],["動名詞","Ving(前置詞の目的語)","~すること(前置詞+O)"],["動名詞","not/never ~ing ①","~ない"],["動名詞","not/never ~ing ②","決して/絶対~ない"],["動名詞","having p.p","~したこと(完了の動名詞)"],["動名詞","being p.p","~されること(受動の動名詞)"],["動名詞","enjoy ~ing","~することを楽しむ"],["動名詞","admit ~ing","~したことを認める"],["動名詞","deny ~ing","~したことを否定する"],["動名詞","give up ~ing","~することを諦める/やめる"],["動名詞","finish ~ing","~し終える"],["動名詞","quit ~ing","~するのをやめる"],["動名詞","put off ~ing","~するのを延期する"],["動名詞","avoid ~ing","~するのを避ける"],["動名詞","mind ~ing","~するのを嫌がる"],["動名詞","consider ~ing","~することを考える"],["動名詞","imagine ~ing","~することを想像する"],["動名詞(意味が変わる動詞)","forget ~ing","(過去に)~したことを忘れる"],["動名詞(意味が変わる動詞)","forget to V","(これから)~するのを忘れる"],["動名詞(意味が変わる動詞)","remember ~ing","(過去に)~したことを覚えている"],["動名詞(意味が変わる動詞)","remember to V","忘れずに(これから)~する"],["動名詞(意味が変わる動詞)","regret ~ing","(過去に)~したことを後悔する"],["動名詞(意味が変わる動詞)","regret to V","残念ながら(これから)~する"],["動名詞(意味が変わる動詞)","need ~ing","~される必要がある"],["動名詞(意味が変わる動詞)","need to V","~する必要がある"],["動名詞(意味が変わる動詞)","try ~ing","~を試しにやってみる"],["動名詞(意味が変わる動詞)","try to V","~しようとする"],["動名詞(意味が変わる動詞)","like ~ing","~することが好き"],["動名詞(意味が変わる動詞)","like to V","~するのが良いと思う"],["動名詞(意味が変わる動詞)","stop ~ing","~することをやめる"],["動名詞(意味が変わる動詞)","stop to V","~するために止まる"],["動名詞(重要表現)","Do/Would you mind ~ing?","~していただけますか?"],["動名詞(重要表現)","without ~ing","~せずに"],["動名詞(重要表現)","on ~ing","~するとすぐに"],["動名詞(重要表現)","in ~ing","~する際/時に"],["動名詞(重要表現)","What do you say to ~ing?","~するのはどうですか?"],["動名詞(重要表現)","look forward to ~ing","~することを楽しみにする"],["動名詞(重要表現)","There is no ~ing","~できない"],["動名詞(重要表現)","There is no point in ~ing","~する意味はない"],["動名詞(重要表現)","the point of ~ing","~する意味"],["動名詞(重要表現)","worth ~ing","~する価値がある"],["動名詞(重要表現)","busy ~ing","~するのに忙しい"],["動名詞(重要表現)","a waste of time(money) ~ing","~するなんて時間(お金)の無駄"],["動名詞(重要表現)","cannot help ~ing","~せざるを得ない"],["動名詞(重要表現)","get used to ~ing / be used to ~ing","~することに慣れる/慣れている"],["受動態","S be p.p","~される(現在)"],["受動態","was/were p.p","~された(過去)"],["受動態","will be p.p","~されるだろう(未来)"],["受動態","Be S p.p?","~されている?(疑問)"],["受動態","be not p.p","~されない(否定)"],["受動態","助動詞 be p.p","~される(助動詞つき)"],["受動態","have/has been p.p","~されてきた(完了)"],["受動態","be being p.p","~されている(進行)"],["受動態","being p.p(動名詞)","~されること(動名詞)"],["受動態","by ~","~に(よって)"],["受動態","to ~","~に(よって)"],["受動態","with ~","~に(よって)"],["受動態","as ~","~として"],["受動態","for ~","~で"],["受動態","get p.p","~される ※カジュアルに"],["受動態","be told O to V","~するように言われる"],["受動態","be made O V(原形)","~させられる ※使役の受動"],["受動態","be known O V(原形)","~するのを知られた ※知覚の受動"],["受動態(感情)","be surprised by/at ~","~に驚かされる → 驚く"],["受動態(感情)","be pleased with ~","~に喜ばされる → 喜んでいる"],["受動態(感情)","be interested in ~","~に興味を持たされる → 持っている"],["受動態(感情)","be disappointed at/with/in ~","~にがっかりさせられる → している"],["受動態(感情)","be worried about ~","~に心配させられる → を心配している"],["受動態(感情)","be scared of ~","~に怖がらせられる → を怖がっている"],["受動態(感情)","annoyed at/about/by/with ~","~にイライラさせられる → している"],["受動態(感情)","amazed at/with/by ~","~に驚かされる → 驚いている"],["受動態(感情)","be absorbed in ~","~に没頭させられる → している"],["受動態(感情)","be born","生まれる"],["受動態(感情)","be seated","座る"],["受動態(感情)","be married to ~","~と結婚している"],["受動態(感情)","be engaged to ~","~と婚約している"],["比較","as ~ as B","AはBと同じくらい~"],["比較","not as ~ as B","Bほど~ではない"],["比較","○ times as ~ as B / half ~ / one-○ ~","Bの○倍~ / 半分~ / ○分の1~"],["比較","No (other) ~ as … as B","Bほど…な~はない"],["比較","~er than B","AはBよりも~だ"],["比較","more ~ than B","AはBよりも~だ ※2音節以上、-lyの副詞"],["比較","No (other) S ~er than B","Bより~なSはない"],["比較","prefer A to B","Bよりも Aが好き"],["比較","A superior to B","Bよりも(Aが)優れている"],["比較","A inferior to B","Bよりも(Aが)劣っている"],["比較","A senior to B","Bよりも年上"],["比較","A junior to B","Bよりも年下"],["比較","~er and ~er","ますます~"],["比較","the ~er, the …er","~なほど、ますます…"],["比較(重要表現)","know better than to V","~するほど愚かではない"],["比較(重要表現)","more or less","多かれ少なかれ/ほとんど/ある程度"],["比較(重要表現)","no more than ~","たった~しか"],["比較(重要表現)","not more than ~","せいぜい/多くても"],["比較(重要表現)","no more ~ than A","Aと同じで~ではない"],["比較(重要表現)","no less than ~","~も(たくさん)"],["比較(重要表現)","not less than ~","少なくても~"],["比較(重要表現)","no less ~ than A","Aに劣らないほど~だ"],["比較(最上級)","the ~est (A)","(Aが)最も~だ"],["比較(最上級)","the most ~","最も~だ ※2音節以上、-lyの副詞"],["比較(最上級)","in (名詞)","~の中で ※場所や集団を表す単数名詞"],["比較(最上級)","of (名詞)","~の中で ※人やものを表す名詞"],["比較(最上級)","the ~est +名詞+関係詞+完了の文","Sが Vした中で最も~な(名詞)だ ※目的格省略可"],["比較(最上級)","one of the ~est (複数名詞)","最も~な(名詞)の1つ"],["比較(最上級)","the 序数 (the最上級)","○番目に~"],["比較(最上級)","the最上級(名詞) ever","今までで1番~な(名詞)"],["比較(最上級)","by far the最上級","ずばぬけて~"],["比較(最上級)","at (the) most","多くても/せいぜい"],["比較(最上級)","at least","少なくとも/最低でも/せめて"],["比較(最上級)","more B than any other(名詞)","他の~よりもBがたくさんある"],["仮定法","If S 過去形, S' would/could/might V(過去)","もしSが(現在)過去形なら、S'は(現在)Vだろう"],["仮定法","S wish S' was/were ~","~だったらなあ"],["仮定法","If S had p.p, S' would/could/might have p.p(過去完了)","もしSが(過去に)p.pだったなら、S'は(過去)p.pだっただろう"],["仮定法","If S had p.p, S' would/could/might V(合体)","もしSが(過去には)p.pだったら、S'は(現在)Vだろう"],["仮定法","If S were to V(未来)","もしSが~するとしたら"],["仮定法","If S should V(未来)","万が一~することがあれば"],["仮定法","If only S 過去形!","(今)~であればなあ!"],["仮定法","If only S had p.p!","(過去に)~であればなあ!"],["仮定法","If only S would V!","(未来に)~であればなあ!"],["仮定法","If it were not for A,","もし(現在)Aがなかったら"],["仮定法","But for A, / Without A,","もし(過去/現在)Aがなかったら"],["仮定法","If it had not been for A,","もし(過去に)Aがなかったら"],["仮定法","as if / as though ~","あたかも~のように"],["仮定法","It is time ~(仮定法)","もう~しても良い時間だ"],["仮定法","Was/Were S ~(if省略、かしこまった文)","もし~だったら"],["強調構文","It is 強調したい語(S/O/副詞) that ~","(その語)が/を/に~"],["強調構文","S do/does V(原形) ~","本当に/間違いなくVする"],["強調構文","very 名詞(強調) ①","まさに(名詞)"],["強調構文","very 名詞(強調) ②","~こそ(名詞)"],["強調構文","Why on earth ~? / What on earth ~?","一体なぜ~?/一体全体~? ※否定や疑問の文で使う"],["強調構文","Why in the world ~? / What in the world ~?","一体全体なぜ~?/一体何~?"],["強調構文","no ~ at all","全く~ない"],["強調構文","not at all","全然~ない"],["強調構文","by no means","決して~ではない"],["強調構文","~ and ~","何度も何度も~"],["強調構文","All S have to do is V","Sは~さえすれば良い"],["強調構文","What ~ !","~するもの/こと(感嘆)"],["倒置・省略・挿入","C V S ~","Sは Cである"],["倒置・省略・挿入","Never V S ~","~ない"],["倒置・省略・挿入","場所/方向 V S ~","場所/方向にはSがVする"],["倒置・省略・挿入","So V S","~もそうだ"],["倒置・省略・挿入","Neither/Nor V S","~もそうではない"],["倒置・省略・挿入","副詞節の S'+be動詞 省略","(接続詞)+V, SはVする"],["倒置・省略・挿入",", I'm afraid, ","残念だけど"],["倒置・省略・挿入",", I think, ","私が思うに"],["倒置・省略・挿入",", it seems, ","~みたいだよ"],["倒置・省略・挿入",", as we all know, ","みんな知っての通り"],["倒置・省略・挿入",", I suppose. ","~だと思うよ"],["倒置・省略・挿入",", in other words, ","言い換えると"],["倒置・省略・挿入",", in fact, ","実際"],["倒置・省略・挿入",", by the way. ","ところで"],["同格","名詞, 同格, ~","(名詞)の同格~"],["同格","~名詞 that S' V'","S'V'という(名詞)~"],["同格","名詞 of A","Aという(名詞)~"],["話法","say, \"…\" → say (that) S' V'","(時制を1つ過去へ)「~と言った」 ※平叙文"],["話法","say to A, \"…\" → tell A (that) S' V'","「Aに~と言った」 ※伝達動詞 say→tell に変化"],["話法","ask, \"Do/Does/Did ~?\" → ask (A) if/whether S' V'","「~かどうか尋ねた」 ※Yes/No疑問文"],["話法","ask, \"疑問詞 ~?\" → ask (A) 疑問詞 S' V'","「(疑問詞)~か尋ねた」 ※Wh疑問文、語順は平叙文と同じに"],["話法","say, \"命令文\" → tell/order/ask A to V(原形)","「Aに~するように言った」 ※命令文"],["話法","say, \"Let's ~\" → suggest (that) S' (should) V' / propose ~ing","「~しようと提案した」"],["話法(時制の一致)","現在形 → 過去形 / 過去形 → 過去完了形","伝達動詞が過去のとき、時制を1つ過去にずらす"],["話法(時制の一致)","will → would / can → could / may → might","助動詞も1つ過去の形へ"],["話法(時制の一致)","must → had to(義務) / must(推量はそのまま)","must は意味によって変化するかどうかが変わる"],["話法(代名詞・指示語の変化)","this/these → that/those","話し手からの距離に合わせて変化"],["話法(代名詞・指示語の変化)","here → there / now → then","場所・時の指示語も変化"],["話法(代名詞・指示語の変化)","today → that day / tonight → that night","「その日」「その夜」に変化"],["話法(代名詞・指示語の変化)","yesterday → the day before / tomorrow → the next day","前日・翌日の表現に変化"],["話法(代名詞・指示語の変化)","~ago → ~before / next week → the following week / last week → the week before","時間表現がすべて話者基準からずれるため変化"]];
+// Raw rows: [category, pattern(en), meaning(jp), example(en, optional)]
+const RAW_CARDS = [["文型","S + V","「S(は/が)ある(いる)」/ 目的語つきの時は「Sは(が)Vする」"],["文型","S + V + C","「S(は/が)Cである」/「S(は/が)CにVする」  ※S=C"],["文型","S + V + O","「Sは Oを V(する)」  ※S≠O、O→V"],["文型","S + V + O1 + O2","「S(は/が)O1に(と)O2をV(する)」  ※O1≠O2、O2→V"],["文型","S + V + O + C","「S(は/が)OをCであるとV(する)」  ※O=C"],["助動詞","must ①","(肯定文)~しなければならない/(否定文)~してはいけない ※主観的","You must finish this report by Friday."],["助動詞","must ②","(決めつけ)~に違いない","He must be exhausted after that flight."],["助動詞","have to ①","(客観的に)~しなければならない(状況)","I have to work this weekend."],["助動詞","have to ②","(否定)~しなくてもいい","You don't have to come if you're busy."],["助動詞","can ①","能力や技能がある","She can speak three languages."],["助動詞","can ②","~できる","I can finish this by tomorrow."],["助動詞","can ③","ありえる/可能性がある ※一般常識の範囲内で","It can get very cold here in winter."],["助動詞","can ④","~してもいい ※状況的に","You can borrow my car if you need to."],["助動詞","can ⑤(疑問)","~してくれない?","Can you pass the salt?"],["助動詞","could ①","能力や技能があった ※半永久的な能力","He could play chess when he was five."],["助動詞","could ②","~できた","I could finish the report by noon yesterday."],["助動詞","could ③","もしかするとありえる/可能性がある ※ある条件下で起こりうること","It could rain later today."],["助動詞","could ④","~してもいいですよ ※状況的に","You could take the later train if you want."],["助動詞","could ⑤(疑問)","~してくださいますか?","Could you help me with this?"],["助動詞","be able to","能力や技能がある ※助動詞ではない","She is able to solve the puzzle quickly."],["助動詞","was/were able to + 動詞原形","過去のその瞬間にはできた","I was able to catch the last train."],["助動詞","cannot be too careful","どんなに注意してもしすぎることはない","You cannot be too careful when driving in the rain."],["助動詞","cannot help but V (=cannot help ~ing)","~せざるをえない(することを避けられない)","I couldn't help but laugh."],["助動詞","may ①","~してもよい ※主観、上から目線っぽい","You may leave early today."],["助動詞","may ②","~かもしれない","It may rain tomorrow."],["助動詞","might ①","~してもよい ※mayより弱い","You might want to double-check that."],["助動詞","might ②","もしかしたら~かもしれない ※可能性低","She might be at home now."],["助動詞","may well V","~するのがもっともだ","You may well be right about that."],["助動詞","may as well V (as~)","(するぐらいなら)~したほうがよい/~するのもよい(他にない時)","We may as well leave now, there's nothing else to do."],["助動詞","might as well V","~したほうがマシ/~するのも悪くない(他にない時)","I might as well finish the report since I'm already here."],["助動詞","will ①","~だろう","It will rain tomorrow."],["助動詞","will ②","~するつもり","I will call you later."],["助動詞","will ③","(こいつ/これは)~するつもりだ","This machine will not start."],["助動詞","will ④","~してくれませんか?","Will you open the window?"],["助動詞","will ⑤","たぶん~だろう","That will probably be John at the door."],["助動詞","will ⑥","よく~するものである","He will often stay up late reading."],["助動詞","would ①","絶対に~のつもりだった","I would never do that to you."],["助動詞","would ②","~していただけますでしょうか?","Would you send me the file?"],["助動詞","would ③(弱)","たぶん~だろう","It would probably take an hour."],["助動詞","would ④","よく(好き嫌い)~したものであった ※現在不明、状態動詞は使えない","She would spend hours reading as a child."],["助動詞","used to + 動詞原形","(今は違うけど)以前は~だった","I used to live in Osaka."],["助動詞","would like to V","~したい ※丁寧","I would like to ask you a question."],["助動詞","want to V","~したい ※ふつう","I want to go home."],["助動詞","would rather V (than 原形)","(~するより)むしろ~したい","I would rather stay home tonight."],["助動詞","Would you rather A or B?","AとBどちらにしますか?","Would you rather have tea or coffee?"],["助動詞","Which do you want to V, A or B?","AとBどっちがいいですか?","Which do you want to eat, sushi or ramen?"],["助動詞","Shall I ~?","~しましょうか? ※あなたのために私が","Shall I open the window?"],["助動詞","Shall we ~?","~しましょうか? ※一緒に","Shall we get started?"],["助動詞","should ①","~すべき","You should see a doctor."],["助動詞","should ②","~のはず","The package should arrive tomorrow."],["助動詞","It is 感情を表す形容詞 (that) S should V","Sが Vするのは~だ","It is strange that he should say that."],["助動詞","S<提案・要望・命令の動詞>(that) S' should V'","S'がV'するべきだとSは(Oに)~する","I suggested that she should apply for the job."],["助動詞","It is 形容詞 that…(should)","…することが~だ ※間接的要求","It is important that we should finish this today."],["助動詞","ought to ①","~すべきだ","You ought to apologize."],["助動詞","ought to ②","~のはずだ","The train ought to be here by now."],["助動詞","had better ①(You~)","~しなさい","You had better hurry."],["助動詞","had better ②(You以外~)","~したほうがいい","We had better leave now."],["助動詞(完了・慣用)","may have p.p","~したかも/だったかも ※強"],["助動詞(完了・慣用)","might have p.p","~したかも/だったかも ※弱"],["助動詞(完了・慣用)","could have p.p","~したかも/だったかも ※理屈から、客観的に"],["助動詞(完了・慣用)","must have p.p","~したに違いない/だったに違いない"],["助動詞(完了・慣用)","should have p.p / ought to have p.p","~したはず/だったはず ※should=弱、ought to=強"],["助動詞(完了・慣用)","cannot have p.p","~したはずがない/だったはずがない"],["助動詞(完了・慣用)","should not have p.p","~すべきではなかったのに(してしまった)"],["助動詞(完了・慣用)","need not have p.p","~する必要なかったのに(してしまった)"],["助動詞(完了・慣用)","would like O to V","Oに~してほしい"],["助動詞(完了・慣用)","have only to V","~しさえすればいい"],["助動詞(完了・慣用)","dare say ~","おそらく~だろう"],["助動詞(完了・慣用)","How dare ~","よくも~できるものだ"],["助動詞(完了・慣用)","Can I ~?","~してもいいですか? ※状況"],["助動詞(完了・慣用)","May I ~?","~してもいいですか? ※相手に"],["助動詞(完了・慣用)","Will you ~?","~してくれませんか?"],["助動詞(完了・慣用)","Can you ~?","~してくれませんか?"],["助動詞(完了・慣用)","Would you ~?","(もしよろしければ)~してくれませんか?"],["助動詞(完了・慣用)","Could you ~?","(もしよろしければ)~してくれませんか?"],["分詞","現在分詞 ~ing(1語で名詞を前置修飾)","~している(名詞)"],["分詞","現在分詞 ~ing(2語以上で名詞を後置修飾)","(名詞)が~している"],["分詞","過去分詞 ~ed(1語で名詞を前置修飾)","~された(る)(名詞) ※受動態っぽいかんじ"],["分詞","過去分詞 ~ed(2語以上で名詞を後置修飾)","(名詞)が~された(る)"],["分詞","分詞構文 ~ing,","~すると/しながら/なので 等(文脈で判断)"],["分詞","分詞構文 ~ed,","~されると/されて 等(受動の分詞構文)"],["完了形","have/has p.p ①(already)","もう~してしまった"],["完了形","have/has p.p ⑥(just)","ちょうど~したところだ"],["完了形","have/has p.p ②(yet, 否定)","まだ~していない"],["完了形","have/has p.p ③","~したことがある"],["完了形","have/has p.p ④(since/for)","(今まで)ずっと~していた"],["完了形","have/has p.p (never)","~したことが一度もない"],["完了形","had p.p ①(already)","(もう)~してしまっていた"],["完了形","had p.p ②(just)","~したところだった"],["完了形","had p.p ③(yet, 否定)","(まだ)~してしまっていなかった"],["完了形","had p.p ④","~したことがあった(never)"],["完了形","will have p.p ①","~してしまっているだろう"],["完了形","will have p.p ②","~したことがあるだろう"],["完了進行形","have/has been ~ing","(今まで)ずっと~している"],["完了進行形","had been ~ing","(その時まで)ずっと~していた"],["完了進行形","will have been ~ing","ずっと~しているだろう"],["関係詞(制限用法)","~ who/that ~ (主格)","それは、~な人"],["関係詞(制限用法)","~ who/that ~ (目的格、省略可)","それは、~な人"],["関係詞(制限用法)","~ which/that ~ (主格、人以外)","それは、~な人以外のもの"],["関係詞(制限用法)","~ which/that ~ (目的格、省略可)","それは、~な人以外のもの"],["関係詞(制限用法)","~ whose ~,","それは、(whoseが持っている)~の(名詞)"],["関係詞(制限用法)","前置詞 + 関係代名詞","それは、~な(前置詞+関係代名詞)"],["関係詞(制限用法)","what ~ (主格、先行詞なし)","~するもの"],["関係詞(制限用法)","what ~ (目的格、先行詞なし)","~すること"],["関係詞(制限用法)","where,(先行詞あってもなくても)","それは、~する場所"],["関係詞(制限用法)","when,(先行詞あってもなくても)","それは、~する時"],["関係詞(制限用法)","why,(先行詞省略可 = the reason)","それは、~する理由"],["関係詞(制限用法)","how,(先行詞省略、使う時はhow自体を省略 = the way)","それは、~する方法"],["関係詞(非制限用法)",", who ~,","(先行詞=既に特定できる人)。ちなみに、その人は~ ※that不可、省略不可"],["関係詞(非制限用法)",", which ~,","(先行詞=既に特定できるもの、または前の文全体)。ちなみに、それは~ ※that不可、省略不可"],["関係詞(非制限用法)",", whose ~,","(先行詞=既に特定できる人/もの)。ちなみに、その~は…"],["関係詞(非制限用法)",", where ~,","(先行詞=既に特定できる場所、地名など)。ちなみに、そこでは~"],["関係詞(非制限用法)",", when ~,","(先行詞=既に特定できる時、年号など)。ちなみに、その時~"],["関係詞(非制限用法)","制限用法 vs 非制限用法","制限用法=先行詞を限定・特定する(コンマなし) / 非制限用法=すでに特定された先行詞に補足説明を加える(コンマあり)"],["複合・連鎖関係詞","関係代名詞 S think/believe/say/hear/know/find V","それは、S'が~と思う/信じる/言う/聞く/知る/見つける(関係詞)である"],["複合・連鎖関係詞","先行詞 as ~,","~のような(先行詞)"],["複合・連鎖関係詞","no/never 先行詞 but ~","~でない(先行詞)はない"],["複合・連鎖関係詞","whoever ①","誰でも"],["複合・連鎖関係詞","whoever ②(= no matter who S be)","誰だろうと"],["複合・連鎖関係詞","whichever ①","どちらでも"],["複合・連鎖関係詞","whichever ②(= no matter which~)","どっちだろうと"],["複合・連鎖関係詞","whatever ①","何でも"],["複合・連鎖関係詞","whatever ②(= no matter what~)","何だろうと"],["複合・連鎖関係詞","whenever ①","いつでも"],["複合・連鎖関係詞","whenever ②(= no matter when、譲歩)","いつ~しても"],["複合・連鎖関係詞","wherever ①","どこでも"],["複合・連鎖関係詞","wherever ②(= no matter where、譲歩)","どこへ~しても"],["複合・連鎖関係詞","however(= no matter how、譲歩)","どんなに~しても"],["不定詞","to V(名詞的用法、主語)","~することは"],["不定詞","to V(名詞的用法、補語)","~することだ"],["不定詞","to V(名詞的用法、目的語)","~することを"],["不定詞","It ~ to V","~することは…"],["不定詞","to V(形容詞的用法、名詞を修飾)","~する(名詞)"],["不定詞","to V(副詞的用法①目的、動詞を修飾)","~するために"],["不定詞","to V(副詞的用法②感情の原因、形容詞を後ろから修飾)","~して(感情形容詞)だ"],["不定詞","to V(副詞的用法③判断の根拠)","~して(形容詞)だ"],["不定詞","to V(副詞的用法④結果、動詞を修飾)","結果~する"],["不定詞","to V(副詞的用法⑤程度、形容詞を修飾)","~するのに(形容詞)だ"],["不定詞(重要表現)","be to V ①","~すべき"],["不定詞(重要表現)","be to V ②","~する予定である"],["不定詞(重要表現)","be to V ③","~できる"],["不定詞(重要表現)","be to V ④","~するつもり/したい"],["不定詞(重要表現)","be to V ⑤","~する運命である"],["不定詞(重要表現)","in order to V / so as to V","~するために"],["不定詞(重要表現)","too 形/副 to V ①","~するには(形/副)すぎる"],["不定詞(重要表現)","too 形/副 to V ②","あまりに(形/副)すぎて~できない"],["不定詞(重要表現)","形/副 enough (for A) to V","(Aが)~するには十分(形/副)"],["不定詞(重要表現)","not/never to V","~しない(こと)"],["不定詞(重要表現)","tell O to V","Oに~するように言う"],["不定詞(重要表現)","ask O to V","Oに~するように頼む"],["不定詞(重要表現)","want O to V","Oに~してほしい"],["不定詞(重要表現)","to be p.p","~されること(受動)"],["不定詞(重要表現)","to have p.p","(過去に)~だったよう(完了)"],["不定詞(重要表現)","to be ~ing","~しているよう(進行)"],["不定詞(重要表現)","what to V","何を~すべきか"],["不定詞(重要表現)","where to V","どこに/へ/で~すべきか"],["不定詞(重要表現)","when to V","いつ~すべきか"],["不定詞(重要表現)","which(名詞) to V","どちら(の名詞)を~すべきか"],["不定詞(重要表現)","whether to V","~すべきかどうか"],["不定詞(重要表現)","how to V","~の仕方"],["不定詞(重要表現)","who to V","誰を/に~すべきか"],["不定詞(重要表現)","make O V(原形)","Oに(強制的に/無意識のうちに)~させる"],["不定詞(重要表現)","let O V(原形)","Oに(望み通りに/許可して)~させる/させてやる"],["不定詞(重要表現)","have O V(原形)","Oに~させる/してもらう"],["不定詞(重要表現)","get O to V","Oに(頼んだり説得して)~してもらう"],["不定詞(重要表現)","watch O V(原形)","Oが~するのを(ずっと)見る"],["不定詞(重要表現)","see O V(原形)","Oが~するのを(ずっと)見る/見える"],["不定詞(重要表現)","hear O V(原形)","Oが~するのが聞こえる"],["不定詞(重要表現)","feel O V(原形)","Oが~するのを感じる"],["不定詞(重要表現)","happen to V(肯定文)","たまたま~する"],["不定詞(重要表現)","happen to V?(疑問文)","ひょっとして~?"],["不定詞(重要表現)","come/get to V","~するようになる"],["不定詞(重要表現)","learn to V","~できるようになる"],["不定詞(重要表現)","manage to V","どうにか~する"],["不定詞(重要表現)","can afford to V","~する余裕がある"],["不定詞(重要表現)","prove to be","~だと分かる"],["不定詞(重要表現)","turn out to be","~だと分かる"],["不定詞(重要表現)","likely to V","~しそうだ"],["不定詞(重要表現)","unlikely to V","~しそうにない"],["不定詞(重要表現)","sure to V","きっと~する"],["不定詞(重要表現)","ready to V","~する準備ができている/喜んで~する"],["不定詞(重要表現)","willing to V","~する気がある/~するのをいとわない"],["不定詞(重要表現)","reluctant to V","~するのが気乗りしない/気が進まない"],["不定詞(重要表現)","due to V","~することになっている"],["不定詞(重要表現)","eager to V","~したがる"],["不定詞(重要表現)","have something to do with A","Aと関係がある"],["不定詞(重要表現)","have nothing to do with A","Aと関係がない"],["不定詞(重要表現)","To be honest,","正直に言うと"],["不定詞(重要表現)","Needless to say,","言うまでもなく"],["不定詞(重要表現)","To tell the truth,","実を言うと"],["不定詞(重要表現)","To make a long story short,","手短に言うと"],["不定詞(重要表現)","to begin with ①","まず、第一に"],["不定詞(重要表現)","to begin with ②","そもそも"],["不定詞(重要表現)","hope to V","~することを望む"],["不定詞(重要表現)","wish to V","~することを願う"],["不定詞(重要表現)","mean to V","~しようとする"],["不定詞(重要表現)","expect to V","~することを期待/予期する"],["不定詞(重要表現)","plan to V","~することを計画する"],["不定詞(重要表現)","decide to V","~することを決める"],["不定詞(重要表現)","agree to V","~することを同意する"],["不定詞(重要表現)","offer to V","~することを申し出る"],["不定詞(重要表現)","promise to V","~することを約束する"],["不定詞(重要表現)","refuse to V","~することを拒否する"],["不定詞(重要表現)","deserve to V","~する権利がある"],["不定詞(重要表現)","arrange to V","~するよう手配する"],["不定詞(重要表現)","fail to V","~できない"],["不定詞(重要表現)","afford to V","~する余裕がある"],["動名詞","Ving(主語)","~すること(主語)"],["動名詞","Ving(補語)","~すること(補語)"],["動名詞","Ving(目的語)","~すること(目的語)"],["動名詞","Ving(前置詞の目的語)","~すること(前置詞+O)"],["動名詞","not/never ~ing ①","~ない"],["動名詞","not/never ~ing ②","決して/絶対~ない"],["動名詞","having p.p","~したこと(完了の動名詞)"],["動名詞","being p.p","~されること(受動の動名詞)"],["動名詞","enjoy ~ing","~することを楽しむ"],["動名詞","admit ~ing","~したことを認める"],["動名詞","deny ~ing","~したことを否定する"],["動名詞","give up ~ing","~することを諦める/やめる"],["動名詞","finish ~ing","~し終える"],["動名詞","quit ~ing","~するのをやめる"],["動名詞","put off ~ing","~するのを延期する"],["動名詞","avoid ~ing","~するのを避ける"],["動名詞","mind ~ing","~するのを嫌がる"],["動名詞","consider ~ing","~することを考える"],["動名詞","imagine ~ing","~することを想像する"],["動名詞(意味が変わる動詞)","forget ~ing","(過去に)~したことを忘れる"],["動名詞(意味が変わる動詞)","forget to V","(これから)~するのを忘れる"],["動名詞(意味が変わる動詞)","remember ~ing","(過去に)~したことを覚えている"],["動名詞(意味が変わる動詞)","remember to V","忘れずに(これから)~する"],["動名詞(意味が変わる動詞)","regret ~ing","(過去に)~したことを後悔する"],["動名詞(意味が変わる動詞)","regret to V","残念ながら(これから)~する"],["動名詞(意味が変わる動詞)","need ~ing","~される必要がある"],["動名詞(意味が変わる動詞)","need to V","~する必要がある"],["動名詞(意味が変わる動詞)","try ~ing","~を試しにやってみる"],["動名詞(意味が変わる動詞)","try to V","~しようとする"],["動名詞(意味が変わる動詞)","like ~ing","~することが好き"],["動名詞(意味が変わる動詞)","like to V","~するのが良いと思う"],["動名詞(意味が変わる動詞)","stop ~ing","~することをやめる"],["動名詞(意味が変わる動詞)","stop to V","~するために止まる"],["動名詞(重要表現)","Do/Would you mind ~ing?","~していただけますか?"],["動名詞(重要表現)","without ~ing","~せずに"],["動名詞(重要表現)","on ~ing","~するとすぐに"],["動名詞(重要表現)","in ~ing","~する際/時に"],["動名詞(重要表現)","What do you say to ~ing?","~するのはどうですか?"],["動名詞(重要表現)","look forward to ~ing","~することを楽しみにする"],["動名詞(重要表現)","There is no ~ing","~できない"],["動名詞(重要表現)","There is no point in ~ing","~する意味はない"],["動名詞(重要表現)","the point of ~ing","~する意味"],["動名詞(重要表現)","worth ~ing","~する価値がある"],["動名詞(重要表現)","busy ~ing","~するのに忙しい"],["動名詞(重要表現)","a waste of time(money) ~ing","~するなんて時間(お金)の無駄"],["動名詞(重要表現)","cannot help ~ing","~せざるを得ない"],["動名詞(重要表現)","get used to ~ing / be used to ~ing","~することに慣れる/慣れている"],["受動態","S be p.p","~される(現在)"],["受動態","was/were p.p","~された(過去)"],["受動態","will be p.p","~されるだろう(未来)"],["受動態","Be S p.p?","~されている?(疑問)"],["受動態","be not p.p","~されない(否定)"],["受動態","助動詞 be p.p","~される(助動詞つき)"],["受動態","have/has been p.p","~されてきた(完了)"],["受動態","be being p.p","~されている(進行)"],["受動態","being p.p(動名詞)","~されること(動名詞)"],["受動態","by ~","~に(よって)"],["受動態","to ~","~に(よって)"],["受動態","with ~","~に(よって)"],["受動態","as ~","~として"],["受動態","for ~","~で"],["受動態","get p.p","~される ※カジュアルに"],["受動態","be told O to V","~するように言われる"],["受動態","be made O V(原形)","~させられる ※使役の受動"],["受動態","be known O V(原形)","~するのを知られた ※知覚の受動"],["受動態(感情)","be surprised by/at ~","~に驚かされる → 驚く"],["受動態(感情)","be pleased with ~","~に喜ばされる → 喜んでいる"],["受動態(感情)","be interested in ~","~に興味を持たされる → 持っている"],["受動態(感情)","be disappointed at/with/in ~","~にがっかりさせられる → している"],["受動態(感情)","be worried about ~","~に心配させられる → を心配している"],["受動態(感情)","be scared of ~","~に怖がらせられる → を怖がっている"],["受動態(感情)","annoyed at/about/by/with ~","~にイライラさせられる → している"],["受動態(感情)","amazed at/with/by ~","~に驚かされる → 驚いている"],["受動態(感情)","be absorbed in ~","~に没頭させられる → している"],["受動態(感情)","be born","生まれる"],["受動態(感情)","be seated","座る"],["受動態(感情)","be married to ~","~と結婚している"],["受動態(感情)","be engaged to ~","~と婚約している"],["比較","as ~ as B","AはBと同じくらい~"],["比較","not as ~ as B","Bほど~ではない"],["比較","○ times as ~ as B / half ~ / one-○ ~","Bの○倍~ / 半分~ / ○分の1~"],["比較","No (other) ~ as … as B","Bほど…な~はない"],["比較","~er than B","AはBよりも~だ"],["比較","more ~ than B","AはBよりも~だ ※2音節以上、-lyの副詞"],["比較","No (other) S ~er than B","Bより~なSはない"],["比較","prefer A to B","Bよりも Aが好き"],["比較","A superior to B","Bよりも(Aが)優れている"],["比較","A inferior to B","Bよりも(Aが)劣っている"],["比較","A senior to B","Bよりも年上"],["比較","A junior to B","Bよりも年下"],["比較","~er and ~er","ますます~"],["比較","the ~er, the …er","~なほど、ますます…"],["比較(重要表現)","know better than to V","~するほど愚かではない"],["比較(重要表現)","more or less","多かれ少なかれ/ほとんど/ある程度"],["比較(重要表現)","no more than ~","たった~しか"],["比較(重要表現)","not more than ~","せいぜい/多くても"],["比較(重要表現)","no more ~ than A","Aと同じで~ではない"],["比較(重要表現)","no less than ~","~も(たくさん)"],["比較(重要表現)","not less than ~","少なくても~"],["比較(重要表現)","no less ~ than A","Aに劣らないほど~だ"],["比較(最上級)","the ~est (A)","(Aが)最も~だ"],["比較(最上級)","the most ~","最も~だ ※2音節以上、-lyの副詞"],["比較(最上級)","in (名詞)","~の中で ※場所や集団を表す単数名詞"],["比較(最上級)","of (名詞)","~の中で ※人やものを表す名詞"],["比較(最上級)","the ~est +名詞+関係詞+完了の文","Sが Vした中で最も~な(名詞)だ ※目的格省略可"],["比較(最上級)","one of the ~est (複数名詞)","最も~な(名詞)の1つ"],["比較(最上級)","the 序数 (the最上級)","○番目に~"],["比較(最上級)","the最上級(名詞) ever","今までで1番~な(名詞)"],["比較(最上級)","by far the最上級","ずばぬけて~"],["比較(最上級)","at (the) most","多くても/せいぜい"],["比較(最上級)","at least","少なくとも/最低でも/せめて"],["比較(最上級)","more B than any other(名詞)","他の~よりもBがたくさんある"],["仮定法","If S 過去形, S' would/could/might V(過去)","もしSが(現在)過去形なら、S'は(現在)Vだろう"],["仮定法","S wish S' was/were ~","~だったらなあ"],["仮定法","If S had p.p, S' would/could/might have p.p(過去完了)","もしSが(過去に)p.pだったなら、S'は(過去)p.pだっただろう"],["仮定法","If S had p.p, S' would/could/might V(合体)","もしSが(過去には)p.pだったら、S'は(現在)Vだろう"],["仮定法","If S were to V(未来)","もしSが~するとしたら"],["仮定法","If S should V(未来)","万が一~することがあれば"],["仮定法","If only S 過去形!","(今)~であればなあ!"],["仮定法","If only S had p.p!","(過去に)~であればなあ!"],["仮定法","If only S would V!","(未来に)~であればなあ!"],["仮定法","If it were not for A,","もし(現在)Aがなかったら"],["仮定法","But for A, / Without A,","もし(過去/現在)Aがなかったら"],["仮定法","If it had not been for A,","もし(過去に)Aがなかったら"],["仮定法","as if / as though ~","あたかも~のように"],["仮定法","It is time ~(仮定法)","もう~しても良い時間だ"],["仮定法","Was/Were S ~(if省略、かしこまった文)","もし~だったら"],["強調構文","It is 強調したい語(S/O/副詞) that ~","(その語)が/を/に~"],["強調構文","S do/does V(原形) ~","本当に/間違いなくVする"],["強調構文","very 名詞(強調) ①","まさに(名詞)"],["強調構文","very 名詞(強調) ②","~こそ(名詞)"],["強調構文","Why on earth ~? / What on earth ~?","一体なぜ~?/一体全体~? ※否定や疑問の文で使う"],["強調構文","Why in the world ~? / What in the world ~?","一体全体なぜ~?/一体何~?"],["強調構文","no ~ at all","全く~ない"],["強調構文","not at all","全然~ない"],["強調構文","by no means","決して~ではない"],["強調構文","~ and ~","何度も何度も~"],["強調構文","All S have to do is V","Sは~さえすれば良い"],["強調構文","What ~ !","~するもの/こと(感嘆)"],["倒置・省略・挿入","C V S ~","Sは Cである"],["倒置・省略・挿入","Never V S ~","~ない"],["倒置・省略・挿入","場所/方向 V S ~","場所/方向にはSがVする"],["倒置・省略・挿入","So V S","~もそうだ"],["倒置・省略・挿入","Neither/Nor V S","~もそうではない"],["倒置・省略・挿入","副詞節の S'+be動詞 省略","(接続詞)+V, SはVする"],["倒置・省略・挿入",", I'm afraid, ","残念だけど"],["倒置・省略・挿入",", I think, ","私が思うに"],["倒置・省略・挿入",", it seems, ","~みたいだよ"],["倒置・省略・挿入",", as we all know, ","みんな知っての通り"],["倒置・省略・挿入",", I suppose. ","~だと思うよ"],["倒置・省略・挿入",", in other words, ","言い換えると"],["倒置・省略・挿入",", in fact, ","実際"],["倒置・省略・挿入",", by the way. ","ところで"],["同格","名詞, 同格, ~","(名詞)の同格~"],["同格","~名詞 that S' V'","S'V'という(名詞)~"],["同格","名詞 of A","Aという(名詞)~"],["話法","say, \"…\" → say (that) S' V'","(時制を1つ過去へ)「~と言った」 ※平叙文"],["話法","say to A, \"…\" → tell A (that) S' V'","「Aに~と言った」 ※伝達動詞 say→tell に変化"],["話法","ask, \"Do/Does/Did ~?\" → ask (A) if/whether S' V'","「~かどうか尋ねた」 ※Yes/No疑問文"],["話法","ask, \"疑問詞 ~?\" → ask (A) 疑問詞 S' V'","「(疑問詞)~か尋ねた」 ※Wh疑問文、語順は平叙文と同じに"],["話法","say, \"命令文\" → tell/order/ask A to V(原形)","「Aに~するように言った」 ※命令文"],["話法","say, \"Let's ~\" → suggest (that) S' (should) V' / propose ~ing","「~しようと提案した」"],["話法(時制の一致)","現在形 → 過去形 / 過去形 → 過去完了形","伝達動詞が過去のとき、時制を1つ過去にずらす"],["話法(時制の一致)","will → would / can → could / may → might","助動詞も1つ過去の形へ"],["話法(時制の一致)","must → had to(義務) / must(推量はそのまま)","must は意味によって変化するかどうかが変わる"],["話法(代名詞・指示語の変化)","this/these → that/those","話し手からの距離に合わせて変化"],["話法(代名詞・指示語の変化)","here → there / now → then","場所・時の指示語も変化"],["話法(代名詞・指示語の変化)","today → that day / tonight → that night","「その日」「その夜」に変化"],["話法(代名詞・指示語の変化)","yesterday → the day before / tomorrow → the next day","前日・翌日の表現に変化"],["話法(代名詞・指示語の変化)","~ago → ~before / next week → the following week / last week → the week before","時間表現がすべて話者基準からずれるため変化"]];
 
-// assign stable ids
-CARDS.forEach((c,i)=>c.push('c'+i));
+// Normalize to 4 fields, then append stable id
+const CARDS = RAW_CARDS.map((c, i) => {
+  const row = c.length === 3 ? [c[0], c[1], c[2], ''] : c;
+  row.push('c' + i);
+  return row; // [cat, en, jp, ex, id]
+});
 
-const MAIN_CATS = [...new Set(CARDS.map(c=>c[0].replace(/\(.+/,'')))];
-// group sub-categories under a main category label
 function mainOf(cat){ return cat.replace(/[（(].*$/,''); }
 
 const grouped = {};
@@ -376,10 +437,37 @@ CARDS.forEach(c=>{
 });
 Object.keys(grouped).forEach(k=> grouped[k] = [...new Set(grouped[k])]);
 
+// Strip a trailing circled-number nuance marker (①-⑩) plus an optional
+// immediately-following parenthetical, to get the "production" form —
+// e.g. "might ②" -> "might", "can ⑤(疑問)" -> "can".
+// Only matches when the circled number is the LAST token, so patterns that
+// embed circled numbers mid-string (e.g. inside descriptive parentheses)
+// are left untouched.
+function cleanEN(en){
+  return en.replace(/\s*[①②③④⑤⑥⑦⑧⑨⑩](\([^)]*\))?\s*$/, '').trim();
+}
+
+// Group cards that share the same base (clean) English form, within the
+// same category, so the answer view can show the word's full meaning range
+// (important for recognizing it later while reading/listening) rather than
+// just the single nuance that happened to be quizzed.
+const siblingsByKey = {};
+CARDS.forEach(c=>{
+  const [cat, en, jp] = c;
+  const base = cleanEN(en);
+  const key = cat + '||' + base;
+  if(!siblingsByKey[key]) siblingsByKey[key] = [];
+  siblingsByKey[key].push({ en, jp });
+});
+function siblingsFor(cat, base){
+  const list = siblingsByKey[cat + '||' + base] || [];
+  return list.length > 1 ? list : null;
+}
+
 let selectedCats = new Set(CARDS.map(c=>c[0])); // default: all
-let direction = 'random'; // 'jp2en' | 'en2jp' | 'random'
+const direction = 'jp2en'; // 日本語→英語のみ(産出練習に特化)
 let known = new Set();
-let session = null; // {queue:[card,...], idx, dir, revealed, stats:{know,again}}
+let session = null;
 
 const STORAGE_KEY = 'phase2-known-cards';
 
@@ -396,9 +484,8 @@ async function saveKnown(){
 }
 
 function renderSetup(){
-  const total = CARDS.length;
   const activeCount = CARDS.filter(c=>selectedCats.has(c[0])).length;
-  const knownInSel = CARDS.filter(c=>selectedCats.has(c[0]) && known.has(c[3])).length;
+  const knownInSel = CARDS.filter(c=>selectedCats.has(c[0]) && known.has(c[4])).length;
 
   let catGroupsHtml = '';
   Object.keys(grouped).forEach(main=>{
@@ -419,14 +506,7 @@ function renderSetup(){
 
   document.getElementById('stageBadge').textContent = 'PHASE 2 ・ セットアップ';
   document.getElementById('main').innerHTML = `
-    <p class="setup-intro">カテゴリーを選んで、出題方向を決めてスタート。パターン(英語側)を見て意味を思い出す/意味を見てパターンを思い出す、を繰り返して瞬間で出せるように練習する。</p>
-
-    <div class="section-label">出題方向</div>
-    <div class="setup-row" id="dirRow">
-      <button class="pill-btn ${direction==='random'?'active':''}" data-dir="random">ランダム(日→英・英→日)</button>
-      <button class="pill-btn ${direction==='jp2en'?'active':''}" data-dir="jp2en">日本語 → 英語</button>
-      <button class="pill-btn ${direction==='en2jp'?'active':''}" data-dir="en2jp">英語 → 日本語</button>
-    </div>
+    <p class="setup-intro">カテゴリーを選んでスタート。日本語の意味を見て、英語がパッと出てくるかを練習する(産出特化)。答えは番号なしの素の形でOK。</p>
 
     ${catGroupsHtml}
 
@@ -451,16 +531,10 @@ function renderSetup(){
       renderSetup();
     });
   });
-  document.querySelectorAll('#dirRow .pill-btn').forEach(el=>{
-    el.addEventListener('click', ()=>{
-      direction = el.getAttribute('data-dir');
-      renderSetup();
-    });
-  });
   document.getElementById('selAll').onclick = ()=>{ selectedCats = new Set(CARDS.map(c=>c[0])); renderSetup(); };
   document.getElementById('selNone').onclick = ()=>{ selectedCats = new Set(); renderSetup(); };
   document.getElementById('selUnknown').onclick = ()=>{
-    selectedCats = new Set(CARDS.filter(c=>!known.has(c[3])).map(c=>c[0]));
+    selectedCats = new Set(CARDS.filter(c=>!known.has(c[4])).map(c=>c[0]));
     renderSetup();
   };
   document.getElementById('resetBtn').onclick = async ()=>{
@@ -499,12 +573,8 @@ function startSession(){
 }
 
 function cardDirection(card){
-  if(direction==='jp2en') return 'jp2en';
-  if(direction==='en2jp') return 'en2jp';
-  // random: stable per-card based on id hash so re-render doesn't flip
-  return (hashStr(card[3]) % 2 === 0) ? 'jp2en' : 'en2jp';
+  return 'jp2en';
 }
-function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; } return Math.abs(h); }
 
 function renderDrill(){
   if(!session || session.idx >= session.queue.length){
@@ -512,27 +582,36 @@ function renderDrill(){
     return;
   }
   const card = session.queue[session.idx];
-  const [cat, en, jp, id] = card;
-  const dir = cardDirection(card);
+  const [cat, en, jp, ex, id] = card;
+  const base = cleanEN(en);
   const pct = Math.round((session.idx/session.total)*100);
-
-  const frontText = dir==='jp2en' ? jp : en;
-  const frontClass = dir==='jp2en' ? 'jp' : 'en';
-  const dirLabel = dir==='jp2en' ? '日本語 → 英語' : '英語 → 日本語';
-  const askLabel = dir==='jp2en' ? '英語でどう言う?' : 'どんな意味?';
+  const dirLabel = '日本語 → 英語';
+  const askLabel = '英語でどう言う?';
 
   let bodyHtml;
   if(!session.revealed){
-    bodyHtml = `
-      <div class="prompt-text ${frontClass}">${escapeHtml(frontText)}</div>
-    `;
+    bodyHtml = `<div class="prompt-text jp">${escapeHtml(jp)}</div>`;
   } else {
-    const answerText = dir==='jp2en' ? en : jp;
-    const answerClass = dir==='jp2en' ? 'answer-en' : 'answer-text';
+    // Answer = clean production form, with the full labeled pattern as reference,
+    // plus (when this word has more than one nuance) the word's full meaning
+    // range — useful for recognizing it later while reading/listening.
+    const sibs = siblingsFor(cat, base);
+    let sibsHtml = '';
+    if(sibs){
+      sibsHtml = `
+        <div class="sibling-block">
+          <div class="sibling-label">${escapeHtml(base)} の意味一覧</div>
+          ${sibs.map(s => `<div class="sibling-row">${escapeHtml(s.jp)}</div>`).join('')}
+        </div>
+      `;
+    }
     bodyHtml = `
       <div class="answer-block">
         <div class="answer-label">ANSWER</div>
-        <div class="${answerClass}">${escapeHtml(answerText)}</div>
+        <div class="answer-en">${escapeHtml(base)}</div>
+        ${base !== en ? `<div class="answer-full">正式には: ${escapeHtml(en)}</div>` : ``}
+        ${ex ? `<div class="answer-example">${escapeHtml(ex)}</div>` : ``}
+        ${sibsHtml}
       </div>
     `;
   }
@@ -552,7 +631,7 @@ function renderDrill(){
         <span class="dir-tag">${dirLabel}</span>
       </div>
       <div class="card-body">
-        ${session.revealed ? bodyHtml : `<div>${bodyHtml}<div style="margin-top:18px;font-size:13px;color:var(--gold);font-style:italic;">${askLabel}</div></div>`}
+        ${session.revealed ? bodyHtml : `<div>${bodyHtml}<div class="prompt-sub" style="color:var(--gold);font-style:italic;">${askLabel}</div></div>`}
       </div>
       <div class="card-actions">
         ${session.revealed
@@ -578,7 +657,6 @@ function renderDrill(){
   };
   const againBtn = document.getElementById('againBtn');
   if(againBtn) againBtn.onclick = ()=>{
-    // requeue this card later in the session (3-6 cards later)
     const c = session.queue[session.idx];
     const insertAt = Math.min(session.queue.length, session.idx + 4 + Math.floor(Math.random()*3));
     session.queue.splice(session.idx,1);
